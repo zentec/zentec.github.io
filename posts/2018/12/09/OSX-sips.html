@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Converting from HEIC to JPEG on OS X</title>
+  <meta name="description" content="How to convert HEIC and NEF images to JPEG .jpg .JPEG .JPG in Mac OS X">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Apple has been slowly moving from the trusty JPEG standard to HEIC, and the rest of the world has been slow to actuallycatch up to the newer format.  While m...">
+
+  <meta property="og:site_name" content="nadie.io">
+  
+  <meta property="og:title" content="Converting from HEIC to JPEG on OS X">
+  <meta property="og:type" content="article">
+  <meta property="og:description" content="Apple has been slowly moving from the trusty JPEG standard to HEIC, and the rest of the world has been slow to actually
+catch up to the newer format.  While my phone and Mac do just fine, the only real early adopter I’ve seen that supports
+HEIC has been Dropbox.
+
+"/>
+  
+  
+  <meta property="article:published_time" content="2018-12-09T08:19:22-05:00">
+  <meta property="article:author" content="http://localhost:4000/about/">
+  
+  <meta property="og:url" content="http://localhost:4000/posts/2018/12/09/OSX-sips.html" />
+  
+  <meta itemprop="keywords" content="OSX,NEF,HEIC" />
+  
+  <meta property="article:tag" content="OSX">
+  
+  <meta property="article:tag" content="NEF">
+  
+  <meta property="article:tag" content="HEIC">
+  
+  
+  
+
+   
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+  <style>
+  .affix {
+      top: 0;
+      width: 100%;
+      z-index: 9999 !important;
+  }
+
+  .affix + .container-fluid {
+      padding-top: 70px;
+  }
+ </style>
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103574141-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103574141-2');
+</script>
+
+
+
+</head>
+<body>
+
+<div id="bootstrap-nav" class="navbar navbar-default" data-spy="affix" data-offset-top="0" role="navigation">
+    <div class="container-fluid">
+            <div class="navbar-header"><a class="navbar-brand" href="https://rudn.com">[R]ather [U]seless [D]omain [N]ame</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-menubuilder" style="text-align: center"> 
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid">
+	<div class="row">
+	<div class="col-sm-2"></div>
+  		<div class="col-sm-8" style="margin-top: 1%;">
+			<h2>Converting from HEIC to JPEG on OS X</h2>
+			<p>Apple has been slowly moving from the trusty JPEG standard to HEIC, and the rest of the world has been slow to actually
+catch up to the newer format.  While my phone and Mac do just fine, the only real early adopter I’ve seen that supports
+HEIC has been Dropbox.</p>
+
+<p>While uploading photos to on online service for prints, all of the photos shot on my phone were rejected as “unsupported format”.
+There were over 300 photos I wanted to add to the catalog, and there was absolutely NO WAY I was going to download some pay-to-play
+utility, or upload them to an online “free” conversion service.</p>
+
+<p>The good news is, if you are running OS X, you have all you need.  You just need to do it in terminal and run this command in the
+directory where your HEIC files are stored.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>file <span class="k">in</span> <span class="k">$(</span>find ./ <span class="nt">-name</span> <span class="s2">"*.HEIC"</span> <span class="nt">-print</span><span class="k">)</span> <span class="p">;</span> <span class="se">\ </span>
+<span class="k">do </span>sips <span class="nt">-s</span> format jpeg <span class="nv">$file</span> <span class="nt">--out</span> <span class="s2">"</span><span class="k">${</span><span class="nv">file</span><span class="p">%.*</span><span class="k">}</span><span class="s2">.JPG"</span> <span class="p">;</span> <span class="se">\</span>
+<span class="nb">touch</span> <span class="nt">-r</span> <span class="nv">$file</span> <span class="s2">"</span><span class="k">${</span><span class="nv">file</span><span class="p">%.*</span><span class="k">}</span><span class="s2">.JPG"</span> <span class="p">;</span> <span class="se">\</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>The above bashism will use ‘find’ to go through the current directory and all directories underneath it and look for
+files with the HEIC extension.  When it finds one, it creates a new JPEG version of the file and then sets the timestamp
+of the JPEG version to the same as the original HEIC file.</p>
+
+<p>This also works if you need to convert a large number of RAW image files from say, a Nikon camera.  Just replace
+the “HEIC” to “RAW” and it will convert RAW image files.</p>
+
+<p>Like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>file <span class="k">in</span> <span class="k">$(</span>find ./ <span class="nt">-name</span> <span class="s2">"*.RAW"</span> <span class="nt">-print</span><span class="k">)</span> <span class="p">;</span> <span class="se">\ </span>
+<span class="k">do </span>sips <span class="nt">-s</span> format jpeg <span class="nv">$file</span> <span class="nt">--out</span> <span class="s2">"</span><span class="k">${</span><span class="nv">file</span><span class="p">%.*</span><span class="k">}</span><span class="s2">.JPG"</span> <span class="p">;</span> <span class="se">\</span>
+<span class="nb">touch</span> <span class="nt">-r</span> <span class="nv">$file</span> <span class="s2">"</span><span class="k">${</span><span class="nv">file</span><span class="p">%.*</span><span class="k">}</span><span class="s2">.JPG"</span> <span class="p">;</span> <span class="se">\</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>Does it work the other way, taking JPEG back to HEIC?  Nope.</p>
+
+<p>The same kind of bashism can also be used to remove EXIF data from the JPEG images.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>file <span class="k">in</span> <span class="k">$(</span><span class="nb">ls</span> <span class="nt">-1</span> <span class="k">*</span>.JPEG<span class="k">)</span> <span class="p">;</span> <span class="se">\</span>
+<span class="k">do </span>exiftool <span class="nt">-all</span><span class="o">=</span> <span class="nv">$file</span> <span class="p">;</span> <span class="se">\</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+			<br><br>
+			<br><br><br><br>
+			<div class="footer">
+			</div>
+  		</div>
+  		<div class="col-sm-2"></div>
+	</div>
+        <br>
+</div>
+</body>
+</html>
